@@ -2,12 +2,11 @@ package main
 
 // check if files changed, returns true if one of more files changed
 func checkForFileChanges() bool {
-    return false
+	return false
 }
 
 // executes `git add -A`
-func addAllFiles(){ }
+func addAllFiles() {}
 
 // executes `git commit`
-func commit(){}
-
+func commit() {}
