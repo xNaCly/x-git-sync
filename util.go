@@ -52,6 +52,8 @@ func getConfig() Config {
     confContent, err := os.ReadFile(confFile)
     if err != nil {
         log.Println("[ERR]", err)
+        log.Println("[INF] therefore return fallback config")
+        return fallbackConf
     }
 
     resConfig := Config{}
@@ -59,9 +61,9 @@ func getConfig() Config {
     err = json.Unmarshal(confContent, &resConfig)
     if err != nil {
         log.Println("[ERR]", err)
-    } else {
-        return resConfig
-    }
-
-    return fallbackConf
+        log.Println("[INF] therefore return fallback config")
+        return fallbackConf
+    } 
+    return resConfig
 }
+
