@@ -8,12 +8,23 @@ import (
 )
 
 type Config struct {
-	// will be inserted before the local datestring in the commit title
+    // will be inserted before the local datestring in the commit title, default: "backup: "
 	AutoCommitPrefix string `json:"auto_commit_prefix"`
-	// replaces the default commit title
-	CustomCommitTitle string `json:"custom_commit_title"`
-	// time interval between backups (in s)
+
+    // TODO: implement
+	// CommitTitle string `json:"custom_commit_title"`
+
+    // specifies the date format which the date will be formated as, default: "01-02-2006 15:04:05"
+    CommitTitleDateFormat string `json:"commit_title_date_format"`
+
+    // List filenames affected by the commit in the commit body, default: true
+    AddAffectedFiles bool `json:"add_affected_files"`
+
+    // time interval between backups (in s), default: 300
 	BackupInterval int `json:"backup_interval"`
+
+    // commit command, default: commit -m 
+    CommitCommand string `json:"commit_cmd"`
 }
 
 // Generates a new commit message based on the users configuration:
@@ -39,20 +50,20 @@ func getCommitTitle() string {
 func getConfig() Config {
     // all occuring errors are logged, but not treated like panics, due to the fact that a fallback config is provided
     fallbackConf := Config{
-	    AutoCommitPrefix: "backup:",
+	    AutoCommitPrefix: "backup: ",
 	    BackupInterval: 300,
+        CommitCommand: "commit -m",
+        AddAffectedFiles: true,
+        CommitTitleDateFormat: "01-02-2006 15:04:05",
 	}
 
-    confDir, err := os.UserConfigDir()
-    if err != nil {
-        log.Println("[ERR]", err)
-    }
+    confDir, _ := os.UserConfigDir()
 
     confFile := path.Join(confDir, ".git_auto_sync.json")
     confContent, err := os.ReadFile(confFile)
     if err != nil {
         log.Println("[ERR]", err)
-        log.Println("[INF] therefore return fallback config")
+        log.Println("[INF] using fallback config")
         return fallbackConf
     }
 
@@ -61,7 +72,7 @@ func getConfig() Config {
     err = json.Unmarshal(confContent, &resConfig)
     if err != nil {
         log.Println("[ERR]", err)
-        log.Println("[INF] therefore return fallback config")
+        log.Println("[INF] using fallback config")
         return fallbackConf
     } 
     return resConfig
