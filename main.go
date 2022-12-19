@@ -1,9 +1,13 @@
 package main
 
-import "fmt"
-
 
 func main() {
     conf := getConfig()
-    fmt.Println(conf.AutoCommitPrefix)
+
+    // for true {
+        GitAdd()
+        GitCommit(conf)
+        GitPush()
+        // time.Sleep(time.Duration(conf.BackupInterval) * time.Second)
+    // }
 }
