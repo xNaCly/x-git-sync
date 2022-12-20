@@ -15,7 +15,18 @@ type Config struct {
     //
 	// CommitTitle string `json:"custom_commit_title"`
 
-    // specifies the date format which the date will be formated as, default: "01-02-2006 15:04:05"
+    // specifies the date format which the date will be formatted as, default: "2006-01-02 15:04:05"
+    //
+    //  - 2006 for the year, 06 would only be the last two integer
+    //  - 01 for the month
+    //  - 02 for the day
+    //  - 15 for the hour (24-hour format), 05 for 12-hour format
+    //  - 04 for the minute
+    //  - 05 for the second
+    //
+    // time formatting in go is weird, see docs:
+    //
+    // https://www.digitalocean.com/community/tutorials/how-to-use-dates-and-times-in-go
     CommitTitleDateFormat string `json:"commit_title_date_format"`
 
     // List filenames affected by the commit in the commit body, default: true
