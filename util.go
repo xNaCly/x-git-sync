@@ -27,15 +27,6 @@ type Config struct {
     CommitCommand string `json:"commit_cmd"`
 }
 
-// Generates a new commit message based on the users configuration:
-//
-// 1. By default the commit title will be formated like so: "[Config.AutoCommitPrefix] yyyy-mm-dd HH:MM:SS"
-//
-// 2. if [Config.CustomCommitMsg] is set the commit msg will be exactly the content specified in it: [Config.CustomCommitMsg]
-func getCommitTitle() string {
-	return "here should be the time"
-}
-
 // Loads and parses config from $HOME/.git_auto_sync.json
 //
 //
