@@ -8,10 +8,11 @@ import (
 )
 
 type Config struct {
-    // will be inserted before the local datestring in the commit title, default: "backup: "
+    // will be inserted before the local date string in the commit title, default: "backup: "
 	AutoCommitPrefix string `json:"auto_commit_prefix"`
 
     // TODO: implement
+    //
 	// CommitTitle string `json:"custom_commit_title"`
 
     // specifies the date format which the date will be formated as, default: "01-02-2006 15:04:05"
@@ -23,7 +24,7 @@ type Config struct {
     // time interval between backups (in s), default: 300
 	BackupInterval int `json:"backup_interval"`
 
-    // commit command, default: commit -m 
+    // commit command, default: "git commit -m"
     CommitCommand string `json:"commit_cmd"`
 }
 
@@ -43,9 +44,9 @@ func getConfig() Config {
     fallbackConf := Config{
 	    AutoCommitPrefix: "backup: ",
 	    BackupInterval: 300,
-        CommitCommand: "commit -m",
+        CommitCommand: "git commit -m",
         AddAffectedFiles: true,
-        CommitTitleDateFormat: "01-02-2006 15:04:05",
+        CommitTitleDateFormat: "2006-01-02 15:04:05",
 	}
 
     confDir, _ := os.UserConfigDir()
