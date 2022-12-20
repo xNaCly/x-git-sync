@@ -1,13 +1,15 @@
 package main
 
+import "time"
+
 
 func main() {
     conf := getConfig()
 
-    // for true {
+    for true {
         GitAdd()
         GitCommit(conf)
         GitPush()
-        // time.Sleep(time.Duration(conf.BackupInterval) * time.Second)
-    // }
+        time.Sleep(time.Duration(conf.BackupInterval) * time.Second)
+    }
 }

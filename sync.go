@@ -34,7 +34,7 @@ func gitAffectedFiles() []string {
         case '?':
             continue
         }
-        res = append(res, change+": "+strings.TrimSpace(file[1:]))
+        res = append(res, strings.TrimSpace(file[1:])+" ("+change+")")
     }
     return res
 }
@@ -53,7 +53,7 @@ func GitPush() {
     if err != nil {
         log.Println("[ERR]", err)
     }
-    log.Println("[INF][PUSH]", out)
+    log.Println("[INF][PUSH]:\n", out)
 }
 
 // makes a commit depending on the configuration made by the user in the Config:
@@ -64,23 +64,22 @@ func GitPush() {
 // - the affected files if AddAffectedFiles is true
 func GitCommit(conf Config) bool {
     commitTime := time.Now().Format(conf.CommitTitleDateFormat)
-    commitTitle := conf.AutoCommitPrefix + commitTime
-    commit := ""
+    commitContent := conf.AutoCommitPrefix + commitTime
+    commit := make([]string, 0)
     if conf.AddAffectedFiles {
         affectedFiles := gitAffectedFiles()
-        commit = commitTitle + "\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n")
-    } else {
-        commit = commitTitle
+        commitContent += "\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n") 
+        commit = append(commit, strings.Split(conf.CommitCommand, " ")...)
     }
-    log.Println("[INF][COMMIT]", strings.ReplaceAll(commit, "\n", "\\n"))
-    // TODO: implement running this command
+    commit = append(commit, commitContent)
+    log.Println("[INF][COMMIT]:\n", strings.Join(commit, " "))
+    runCmd(commit)
     return false
 }
 
 // executes command, trims output and returns it
 func runCmd(cmd []string) (val string, err error) {
-    inp := append(cmd)
-    command := exec.Command(inp[0], inp[1:]...)
+    command := exec.Command(cmd[0], cmd[1:]...)
     out, err := command.CombinedOutput()
     if err != nil {
         return "", err
