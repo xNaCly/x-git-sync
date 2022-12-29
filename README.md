@@ -4,13 +4,13 @@ Backup your repository at configured intervals
 
 ## Why use gas
 
--   highly configurable
--   0 external dependencies (except git)
--   backup with the help of git, every interval
--   inspired by [obsidian-git](https://github.com/denolehov/obsidian-git) and its automatic backup system
--   alternative to obsidian git that does not require obsidian and is faster
--   sane defaults
--   JSON based configuration
+- highly configurable
+- 0 external dependencies (except git)
+- backup with the help of git, every interval
+- inspired by [obsidian-git](https://github.com/denolehov/obsidian-git) and its automatic backup system
+- alternative to obsidian git that does not require obsidian and is faster
+- sane defaults
+- JSON based configuration
 
 ## How to use gas
 
@@ -20,7 +20,7 @@ Backup your repository at configured intervals
 
 > Requires:
 >
-> -   go
+> - go
 
 ```bash
 git clone https://github.com/xnacly/git-auto-sync gas
@@ -39,15 +39,15 @@ gas.exe # windows
 
 > Prerequisites:
 >
-> -   git needs to be installed, gas will panic if it isn't
+> - git needs to be installed, gas will panic if it isn't
 >
 > 1. projects needs to be a git project with a remote set up
 > 2. git user should be authenticated to the remote
 > 3. you should be able to run the following commands in your project without issues before using gas in it:
 >
-> -   `git add -A`
-> -   `git commit -m "test"`
-> -   `git push`
+> - `git add -A`
+> - `git commit -m "test"`
+> - `git push`
 >
 > 4. you can now use gas in your project
 
@@ -58,10 +58,10 @@ gas.exe # windows
 
 ### Config path
 
--   On Unix systems, `$XDG_CONFIG_HOME/gas.json` or `$HOME/.config/gas.json`
--   On Darwin, `$HOME/Library/Application Support/gas.json`
--   On Windows, `%AppData%/gas.json`
--   On Plan 9, `$home/lib/gas.json`
+- On Unix systems, `$XDG_CONFIG_HOME/gas.json` or `$HOME/.config/gas.json`
+- On Darwin, `$HOME/Library/Application Support/gas.json`
+- On Windows, `%AppData%/gas.json`
+- On Plan 9, `$home/lib/gas.json`
 
 ### Config options and defaults
 
@@ -101,16 +101,16 @@ If gas can't find its config file (`gas.json`) it will fallback to its default c
     //  - updated but unmerged
     //
     // Example:
-        // false:
-            // commit body: ""
-        // true:
-            // commit body: "Affected files:
-            //   Uni/04_Semester/01_Datenbanken/00_Daten.md (modified)
-            //   ..."
-	add_affected_files: true
+    // false:
+    // commit body: ""
+    // true:
+    // commit body: "Affected files:
+    //   Uni/04_Semester/01_Datenbanken/00_Daten.md (modified)
+    //   ..."
+	add_affected_files: true,
 
 	// time interval between backups (in s)
-	backup_interval: 300
+	backup_interval: 300,
 
 	// commit command, which gas runs after running `git add -A`
 	commit_cmd: "git commit -m"
