@@ -56,13 +56,21 @@ func GitPush() {
 	log.Println("[INFO][PUSH]:\n", out)
 }
 
-// makes a commit depending on the configuration made by the user in the Config:
+// makes a commit
+func GitCommit(conf Config) bool {
+	commitContent := generateCommitContent(conf)
+	log.Println("[INFO][COMMIT]:\n", strings.Join(commitContent, " "))
+	_, err := runCmd(commitContent)
+	return err == nil
+}
+
+// generates the commit content depending on the configuration made by the user in the Config:
 //
 // the commit consists of:
 // - the commit prefix (AutoCommitPrefix)
 // - the current datetime formated according to CommitTitleDateFormat
 // - the affected files if AddAffectedFiles is true
-func GitCommit(conf Config) bool {
+func generateCommitContent(conf Config) []string {
 	commitTime := time.Now().Format(conf.CommitTitleDateFormat)
 	commitContent := conf.AutoCommitPrefix + commitTime
 	commit := make([]string, 0)
@@ -71,10 +79,7 @@ func GitCommit(conf Config) bool {
 		commitContent += "\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n")
 		commit = append(commit, strings.Split(conf.CommitCommand, " ")...)
 	}
-	commit = append(commit, commitContent)
-	log.Println("[INFO][COMMIT]:\n", strings.Join(commit, " "))
-	runCmd(commit)
-	return false
+	return append(commit, commitContent)
 }
 
 // executes command, trims output and returns it

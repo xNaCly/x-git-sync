@@ -40,15 +40,22 @@ type Config struct {
 	CommitCommand string `json:"commit_cmd"`
 }
 
-// Loads and parses config from $HOME/.git_auto_sync.json
+// Loads and parses config from:
+// - On Unix systems, $XDG_CONFIG_HOME or $HOME/.config
+// - On Darwin, it returns $HOME/Library/Application Support
+// - On Windows, it returns %AppData%
+// - On Plan 9, it returns $home/lib
 //
 // config file location depends on os.UserConfigDir()
 //
 // if config is not found the fallback config is:
 //
 //	Config{
-//	    AutoCommitPrefix: "backup:"
-//	    BackupInterval: 300
+//      AutoCommitPrefix:      "backup: ",
+//      BackupInterval:        300,
+//      CommitCommand:         "git commit -m",
+//      AddAffectedFiles:      true,
+//      CommitTitleDateFormat: "2006-01-02 15:04:05",
 //	}
 func getConfig() Config {
 	// all occuring errors are logged, but not treated like panics, due to the fact that a fallback config is provided
@@ -62,7 +69,7 @@ func getConfig() Config {
 
 	confDir, _ := os.UserConfigDir()
 
-	confFile := path.Join(confDir, ".gas.json")
+	confFile := path.Join(confDir, "gas.json")
 	confContent, err := os.ReadFile(confFile)
 	if err != nil {
 		log.Println("[WARNING] gas config not found: ", err)
