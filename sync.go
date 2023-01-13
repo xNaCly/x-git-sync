@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 	"os/exec"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -13,10 +14,10 @@ func gitAffectedFiles() []string {
 	r := strings.Split(out, "\n")
 	res := make([]string, 0)
 	for _, file := range r {
+        file = strings.TrimSpace(file)
 		if len(file) == 0 {
 			break
 		}
-		file = strings.TrimSpace(file)
 		change := ""
 		switch file[0] {
 		case 'M':
@@ -33,6 +34,13 @@ func gitAffectedFiles() []string {
 			change = "updated but unmerged"
 		case '?':
 			continue
+		}
+		if strings.Contains(file, "\"") {
+			v, err := strconv.Unquote(strings.TrimSpace(file[1:]))
+			if err != nil {
+				log.Fatalln("[ERROR] couldn't parse encoded characters: ", err)
+			}
+			file = " " + v
 		}
 		res = append(res, strings.TrimSpace(file[1:])+" ("+change+")")
 	}
@@ -53,7 +61,7 @@ func GitPush() {
 	if err != nil {
 		log.Println("[WARNING]", err)
 	}
-	log.Println("[INFO][PUSH]:\n", out)
+	log.Println("[INFO][PUSH]:", out)
 }
 
 // makes a commit
