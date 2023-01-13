@@ -15,7 +15,6 @@ func main() {
 		log.Fatalln("[FATAL ERROR] 'git' executable not found, gas requires git to work properly - exiting.")
 	}
 
-	log.Println(os.Args)
 	if len(os.Args) > 1 && os.Args[1] == "--dev" {
 		devMode = true
 	}
