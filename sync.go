@@ -76,7 +76,7 @@ func generateCommitContent(conf Config) []string {
 	commit := make([]string, 0)
 	if conf.AddAffectedFiles {
 		affectedFiles := gitAffectedFiles()
-		commitContent += "\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n")
+		commitContent += "\n\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n")
 		commit = append(commit, strings.Split(conf.CommitCommand, " ")...)
 	}
 	return append(commit, commitContent)
