@@ -38,6 +38,9 @@ type Config struct {
 
 	// commit command, default: "git commit -m"
 	CommitCommand string `json:"commit_cmd"`
+
+	// enables debug mode (verbose logging, extra infos, etc.), default: false
+	DebugMode bool `json:"debug"`
 }
 
 // Loads and parses config from:
@@ -65,6 +68,7 @@ func getConfig() Config {
 		CommitCommand:         "git commit -m",
 		AddAffectedFiles:      true,
 		CommitTitleDateFormat: "2006-01-02 15:04:05",
+		DebugMode:             false,
 	}
 
 	confDir, _ := os.UserConfigDir()
@@ -88,7 +92,14 @@ func getConfig() Config {
 	return resConfig
 }
 
-func checkForGit() bool {
+func checkForGit(conf Config) bool {
+	DebugLog(conf, "checking for git executable in path...")
 	_, err := exec.LookPath("git")
 	return err == nil
+}
+
+func DebugLog(conf Config, msg string) {
+	if conf.DebugMode {
+		log.Println("[DEBUG]", msg)
+	}
 }

@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"os/exec"
 	"strconv"
@@ -9,7 +10,8 @@ import (
 )
 
 // gets the changed files using `git status -s`, prefixes files with the correct verb for the given status code, trims filenames
-func gitAffectedFiles() []string {
+func gitAffectedFiles(conf Config) []string {
+	DebugLog(conf, "parsing files and their state")
 	out, _ := runCmd([]string{"git", "status", "-s"})
 	r := strings.Split(out, "\n")
 	res := make([]string, 0)
@@ -44,30 +46,51 @@ func gitAffectedFiles() []string {
 		}
 		res = append(res, strings.TrimSpace(file[1:])+" ("+change+")")
 	}
+	DebugLog(conf, fmt.Sprintf("parsed '%d' changed files...", len(res)))
 	return res
 }
 
+func GitPull(conf Config){
+	DebugLog(conf, "pulling changes from remote...")
+	_, err := runCmd([]string{"git", "pull"})
+	if err != nil {
+		log.Println("[WARNING]", err)
+	}
+	DebugLog(conf, "pulled changes from remote")
+}
+
+func GitRepoHasChanges(conf Config) bool {
+	DebugLog(conf, "checking if repo has changes...");
+    out, err := runCmd([]string{"git", "status", "-s"})
+    return err == nil && len(out) != 0;
+}
+
 // adds all changes to the staged area
-func GitAdd() {
+func GitAdd(conf Config) {
+	DebugLog(conf, "adding all changes to the staged area...")
 	_, err := runCmd([]string{"git", "add", "-A"})
 	if err != nil {
 		log.Println("[WARNING]", err)
 	}
+	DebugLog(conf, "added changes")
 }
 
 // pushes commits to remote
-func GitPush() {
+func GitPush(conf Config) {
+	DebugLog(conf, "pushing commits to remote...")
 	out, err := runCmd([]string{"git", "push"})
 	if err != nil {
 		log.Println("[WARNING]", err)
 	}
-	log.Println("[INFO][PUSH]:", out)
+	log.Println("[INFO][PUSH]:", strconv.Quote(out))
+	DebugLog(conf, "pushed commits to remote...")
 }
 
 // makes a commit
 func GitCommit(conf Config) bool {
+	DebugLog(conf, "making commit...")
 	commitContent := generateCommitContent(conf)
-	log.Println("[INFO][COMMIT]:\n", strings.Join(commitContent, " "))
+	log.Println("[INFO][COMMIT]:", strconv.Quote(strings.Join(commitContent, " ")))
 	_, err := runCmd(commitContent)
 	return err == nil
 }
@@ -79,15 +102,18 @@ func GitCommit(conf Config) bool {
 // - the current datetime formated according to CommitTitleDateFormat
 // - the affected files if AddAffectedFiles is true
 func generateCommitContent(conf Config) []string {
+	DebugLog(conf, "generating commit content...")
 	commitTime := time.Now().Format(conf.CommitTitleDateFormat)
 	commitContent := conf.AutoCommitPrefix + commitTime
 	commit := make([]string, 0)
 	if conf.AddAffectedFiles {
-		affectedFiles := gitAffectedFiles()
+		affectedFiles := gitAffectedFiles(conf)
 		commitContent += "\n\n" + "Affected files:\n" + strings.Join(affectedFiles, "\n")
 		commit = append(commit, strings.Split(conf.CommitCommand, " ")...)
 	}
-	return append(commit, commitContent)
+	commit = append(commit, commitContent)
+	DebugLog(conf, fmt.Sprintf("generated commit content. (%s)", strconv.Quote(strings.Join(commit, " "))))
+	return commit;
 }
 
 // executes command, trims output and returns it
