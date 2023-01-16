@@ -54,7 +54,8 @@ func GitPull(conf Config){
 	DebugLog(conf, "pulling changes from remote...")
 	_, err := runCmd([]string{"git", "pull"})
 	if err != nil {
-		log.Println("[WARNING]", err)
+		log.Println("[WARNING] pulling changes from remote failed: ", err)
+		return
 	}
 	DebugLog(conf, "pulled changes from remote")
 }
@@ -70,7 +71,7 @@ func GitAdd(conf Config) {
 	DebugLog(conf, "adding all changes to the staged area...")
 	_, err := runCmd([]string{"git", "add", "-A"})
 	if err != nil {
-		log.Println("[WARNING]", err)
+		log.Println("[WARNING] adding to staging area failed: ", err)
 	}
 	DebugLog(conf, "added changes")
 }
@@ -78,21 +79,25 @@ func GitAdd(conf Config) {
 // pushes commits to remote
 func GitPush(conf Config) {
 	DebugLog(conf, "pushing commits to remote...")
-	out, err := runCmd([]string{"git", "push"})
+	_, err := runCmd([]string{"git", "push"})
 	if err != nil {
-		log.Println("[WARNING]", err)
+		log.Println("[WARNING] push to remote failed: ", err)
+		return
 	}
-	log.Println("[INFO][PUSH]:", strconv.Quote(out))
-	DebugLog(conf, "pushed commits to remote...")
+	log.Println("[INFO][PUSH]: pushed commits to remote...")
 }
 
 // makes a commit
-func GitCommit(conf Config) bool {
+func GitCommit(conf Config) {
 	DebugLog(conf, "making commit...")
 	commitContent := generateCommitContent(conf)
 	log.Println("[INFO][COMMIT]:", strconv.Quote(strings.Join(commitContent, " ")))
 	_, err := runCmd(commitContent)
-	return err == nil
+	if err != nil {
+		log.Println("[WARNING] commiting failed: ", err)
+		return
+	}
+	DebugLog(conf, "made commit")
 }
 
 // generates the commit content depending on the configuration made by the user in the Config:
