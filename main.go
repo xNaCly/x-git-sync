@@ -32,8 +32,12 @@ func main() {
 		os.Exit(0)
 	}
 	
-	GitPull(conf)
+	if conf.PullOnStart {
+		GitPull(conf)
+	}
+
 	log.Println("[INFO] Watching for changes...")
+
 	for true {
 		if GitRepoHasChanges(conf) {
 			GitAdd(conf)

@@ -41,6 +41,9 @@ type Config struct {
 
 	// enables debug mode (verbose logging, extra infos, etc.), default: false
 	DebugMode bool `json:"debug"`
+
+	// enable pulling from remote on start, default: true
+	PullOnStart bool `json:"pull_on_start"`
 }
 
 // Loads and parses config from:
@@ -59,6 +62,8 @@ type Config struct {
 //      CommitCommand:         "git commit -m",
 //      AddAffectedFiles:      true,
 //      CommitTitleDateFormat: "2006-01-02 15:04:05",
+//		DebugMode:             false,
+// 		PullOnStart:           true,
 //	}
 func getConfig() Config {
 	// all occuring errors are logged, but not treated like panics, due to the fact that a fallback config is provided
@@ -69,6 +74,7 @@ func getConfig() Config {
 		AddAffectedFiles:      true,
 		CommitTitleDateFormat: "2006-01-02 15:04:05",
 		DebugMode:             false,
+		PullOnStart:           true,
 	}
 
 	confDir, _ := os.UserConfigDir()

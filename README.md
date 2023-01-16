@@ -108,6 +108,9 @@ If gas can't find its config file (`gas.json`) it will fallback to its default c
   "commit_cmd": "git commit -m",
 
   // enables debug mode (verbose logging, extra infos, etc.), default: false
-  "debug": true
+  "debug": false,
+
+	// enables pulling the latest changes from remote on start, default: true
+  "pull_on_start": true
 }
 ```
