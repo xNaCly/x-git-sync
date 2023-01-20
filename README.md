@@ -33,7 +33,10 @@ go build
 gas.exe # windows
 ```
 
-#### From release
+#### From release (unix)
+
+- download executable from latest release
+- move the `gas`-executable to a directory in the path, for linux: `mv ./gas /usr/bin` (this might require elevated privileges)
 
 ### Running gas
 
@@ -110,7 +113,7 @@ If gas can't find its config file (`gas.json`) it will fallback to its default c
   // enables debug mode (verbose logging, extra infos, etc.), default: false
   "debug": false,
 
-	// enables pulling the latest changes from remote on start, default: true
+  // enables pulling the latest changes from remote on start, default: true
   "pull_on_start": true
 }
 ```
