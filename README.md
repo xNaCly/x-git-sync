@@ -12,6 +12,20 @@ Backup your repository at configured intervals
 - sane defaults
 - JSON based configuration
 
+### Why use this project and not
+
+Gas (this one) is a lot more minimal and configurable than [git-auto-sync](https://github.com/GitJournal/git-auto-sync),
+doesn't require obsidian or VScode to work ([Obsidian Git](https://github.com/denolehov/obsidian-git), [VS Code GitDoc](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.gitdoc)) and
+isn't as complicated or unintelligible as [Git Annex](https://git-annex.branchable.com/) or [Git Sync](https://github.com/simonthum/git-sync).
+
+Alternatives:
+
+- [git-auto-sync](https://github.com/GitJournal/git-auto-sync)
+- [Obsidian Git](https://github.com/denolehov/obsidian-git)
+- [VS Code GitDoc](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.gitdoc)
+- [Git Annex](https://git-annex.branchable.com/)
+- [Git Sync](https://github.com/simonthum/git-sync)
+
 ## How to use gas
 
 ### Installing gas
