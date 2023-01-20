@@ -1,8 +1,8 @@
-# git-auto-sync
+# x-git-sync
 
 Backup your repository at configured intervals
 
-## Why use gas
+## Why use xgs
 
 - highly configurable
 - 0 external dependencies (except git)
@@ -12,9 +12,9 @@ Backup your repository at configured intervals
 - sane defaults
 - JSON based configuration
 
-### Why use this project and not
+### Why use this project and not something else
 
-Gas (this one) is a lot more minimal and configurable than [git-auto-sync](https://github.com/GitJournal/git-auto-sync),
+XGS is a lot more minimal and configurable than [git-auto-sync](https://github.com/GitJournal/git-auto-sync),
 doesn't require obsidian or VScode to work ([Obsidian Git](https://github.com/denolehov/obsidian-git), [VS Code GitDoc](https://marketplace.visualstudio.com/items?itemName=vsls-contrib.gitdoc)) and
 isn't as complicated or unintelligible as [Git Annex](https://git-annex.branchable.com/) or [Git Sync](https://github.com/simonthum/git-sync).
 
@@ -26,9 +26,9 @@ Alternatives:
 - [Git Annex](https://git-annex.branchable.com/)
 - [Git Sync](https://github.com/simonthum/git-sync)
 
-## How to use gas
+## How to use xgs
 
-### Installing gas
+### Installing xgs
 
 #### From Source
 
@@ -37,52 +37,52 @@ Alternatives:
 > - go
 
 ```bash
-git clone https://github.com/xnacly/git-auto-sync gas
-cd gas
+git clone https://github.com/xnacly/x-git-sync xgs
+cd xgs
 go build
 ```
 
 ```
-./gas # unix
-gas.exe # windows
+./xgs # unix
+xgs.exe # windows
 ```
 
 #### From release (unix)
 
 - download executable from latest release
-- move the `gas`-executable to a directory in the path, for linux: `mv ./gas /usr/bin` (this might require elevated privileges)
+- move the `xgs`-executable to a directory in the path, for linux: `mv ./xgs /usr/bin` (this might require elevated privileges)
 
-### Running gas
+### Running xgs
 
 Prerequisites:
 
-- git needs to be installed, gas will panic if it isn't
+- git needs to be installed, xgs will panic if it isn't
 
   1.  projects needs to be a git repository with a remote set up
   2.  git user needs be authenticated to the remote
-  3.  you should be able to run the following commands in your project without issues before using gas in it:
+  3.  you should be able to run the following commands in your project without issues before using xgs in it:
 
   - `git add -A`
   - `git commit -m "test"`
   - `git push`
 
-  4.  you can now use gas in your project
+  4.  you can now use xgs in your project
 
 1. Navigate to the git project you want to backup
-2. run `gas` in your terminal
+2. run `xgs` in your terminal
 
-> If you have no `gas.json`, gas will use its default configuration.
+> If you have no `xgs.json`, xgs will use its default configuration.
 
 ### Config path
 
-- On Unix systems, `$XDG_CONFIG_HOME/gas.json` or `$HOME/.config/gas.json`
-- On Darwin, `$HOME/Library/Application Support/gas.json`
-- On Windows, `%AppData%/gas.json`
-- On Plan 9, `$home/lib/gas.json`
+- On Unix systems, `$XDG_CONFIG_HOME/xgs.json` or `$HOME/.config/xgs.json`
+- On Darwin, `$HOME/Library/Application Support/xgs.json`
+- On Windows, `%AppData%/xgs.json`
+- On Plan 9, `$home/lib/xgs.json`
 
 ### Config options and defaults
 
-If gas can't find its config file (`gas.json`) it will fallback to its default config:
+If xgs can't find its config file (`xgs.json`) it will fallback to its default config:
 
 ```jsonc
 {
@@ -121,7 +121,7 @@ If gas can't find its config file (`gas.json`) it will fallback to its default c
   // time interval between backups (in s)
   "backup_interval": 300,
 
-  // commit command, which gas runs after running `git add -A`
+  // commit command, which xgs runs after running `git add -A`
   "commit_cmd": "git commit -m",
 
   // enables debug mode (verbose logging, extra infos, etc.), default: false

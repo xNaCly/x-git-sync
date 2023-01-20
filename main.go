@@ -8,30 +8,30 @@ import (
 
 func main() {
 	// disables adding, commitin and pushing, only logs the generated commit message
-	devMode := false;
+	devMode := false
 	conf := getConfig()
 
 	if !checkForGit(conf) {
-		log.Fatalln("[FATAL ERROR] 'git' executable not found, gas requires git to work properly - exiting.")
+		log.Fatalln("[FATAL ERROR] 'git' executable not found, git is required to work properly - exiting.")
 	}
 
-	if len(os.Args) > 1 && os.Args[1] == "--debug"{
+	if len(os.Args) > 1 && os.Args[1] == "--debug" {
 		conf.DebugMode = true
 	} else if len(os.Args) > 1 && os.Args[1] == "--dev" {
 		devMode = true
 	}
 
 	if conf.DebugMode {
-		DebugLog(conf, "Debug mode enabled");
+		DebugLog(conf, "Debug mode enabled")
 	}
 
 	if devMode {
-		conf.DebugMode = true;
-		DebugLog(conf, "Dev mode enabled, automatically enabled debug mode, adding, committing and pushing will be disabled.");
+		conf.DebugMode = true
+		DebugLog(conf, "Dev mode enabled, automatically enabled debug mode, adding, committing and pushing will be disabled.")
 		generateCommitContent(conf)
 		os.Exit(0)
 	}
-	
+
 	if conf.PullOnStart {
 		GitPull(conf)
 	}

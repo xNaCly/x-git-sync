@@ -1,3 +1,3 @@
-module gas
+module xgs
 
 go 1.17

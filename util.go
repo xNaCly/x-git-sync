@@ -56,15 +56,15 @@ type Config struct {
 //
 // if config is not found the fallback config is:
 //
-//	Config{
-//      AutoCommitPrefix:      "backup: ",
-//      BackupInterval:        300,
-//      CommitCommand:         "git commit -m",
-//      AddAffectedFiles:      true,
-//      CommitTitleDateFormat: "2006-01-02 15:04:05",
-//		DebugMode:             false,
-// 		PullOnStart:           true,
-//	}
+//		Config{
+//	     AutoCommitPrefix:      "backup: ",
+//	     BackupInterval:        300,
+//	     CommitCommand:         "git commit -m",
+//	     AddAffectedFiles:      true,
+//	     CommitTitleDateFormat: "2006-01-02 15:04:05",
+//			DebugMode:             false,
+//			PullOnStart:           true,
+//		}
 func getConfig() Config {
 	// all occuring errors are logged, but not treated like panics, due to the fact that a fallback config is provided
 	fallbackConf := Config{
@@ -79,10 +79,10 @@ func getConfig() Config {
 
 	confDir, _ := os.UserConfigDir()
 
-	confFile := path.Join(confDir, "gas.json")
+	confFile := path.Join(confDir, "xgs.json")
 	confContent, err := os.ReadFile(confFile)
 	if err != nil {
-		log.Println("[WARNING] gas config not found: ", err)
+		log.Println("[WARNING] xgs config not found: ", err)
 		log.Println("[INFO] using fallback config...")
 		return fallbackConf
 	}
