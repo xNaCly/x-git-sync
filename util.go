@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"path"
+	"strings"
 )
 
 type Config struct {
@@ -98,7 +99,7 @@ func getConfig() Config {
 	return resConfig
 }
 
-func checkForGit(conf Config) bool {
+func CheckForGit(conf Config) bool {
 	DebugLog(conf, "checking for git executable in path...")
 	_, err := exec.LookPath("git")
 	return err == nil
@@ -108,4 +109,14 @@ func DebugLog(conf Config, msg string) {
 	if conf.DebugMode {
 		log.Println("[DEBUG]", msg)
 	}
+}
+
+// executes command, trims output and returns it
+func runCmd(cmd []string) (val string, err error) {
+	command := exec.Command(cmd[0], cmd[1:]...)
+	out, err := command.CombinedOutput()
+	if err != nil {
+		return "", err
+	}
+	return strings.TrimSpace(string(out)), nil
 }

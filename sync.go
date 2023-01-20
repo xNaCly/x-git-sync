@@ -3,7 +3,6 @@ package main
 import (
 	"fmt"
 	"log"
-	"os/exec"
 	"strconv"
 	"strings"
 	"time"
@@ -16,7 +15,7 @@ func gitAffectedFiles(conf Config) []string {
 	r := strings.Split(out, "\n")
 	res := make([]string, 0)
 	for _, file := range r {
-        file = strings.TrimSpace(file)
+		file = strings.TrimSpace(file)
 		if len(file) == 0 {
 			break
 		}
@@ -50,7 +49,7 @@ func gitAffectedFiles(conf Config) []string {
 	return res
 }
 
-func GitPull(conf Config){
+func GitPull(conf Config) {
 	DebugLog(conf, "pulling changes from remote...")
 	_, err := runCmd([]string{"git", "pull"})
 	if err != nil {
@@ -61,9 +60,15 @@ func GitPull(conf Config){
 }
 
 func GitRepoHasChanges(conf Config) bool {
-	DebugLog(conf, "checking if repo has changes...");
-    out, err := runCmd([]string{"git", "status", "-s"})
-    return err == nil && len(out) != 0;
+	DebugLog(conf, "checking if repo has changes...")
+	out, err := runCmd([]string{"git", "status", "-s"})
+	return err == nil && len(out) != 0
+}
+
+func CheckIfGitRepo(conf Config) bool {
+	DebugLog(conf, "checking if current directory is a git repository...")
+	_, err := runCmd([]string{"git", "status", "-s"})
+	return err == nil
 }
 
 // adds all changes to the staged area
@@ -118,15 +123,5 @@ func generateCommitContent(conf Config) []string {
 	}
 	commit = append(commit, commitContent)
 	DebugLog(conf, fmt.Sprintf("generated commit content. (%s)", strconv.Quote(strings.Join(commit, " "))))
-	return commit;
-}
-
-// executes command, trims output and returns it
-func runCmd(cmd []string) (val string, err error) {
-	command := exec.Command(cmd[0], cmd[1:]...)
-	out, err := command.CombinedOutput()
-	if err != nil {
-		return "", err
-	}
-	return strings.TrimSpace(string(out)), nil
+	return commit
 }

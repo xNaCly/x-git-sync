@@ -11,7 +11,7 @@ func main() {
 	devMode := false
 	conf := getConfig()
 
-	if !checkForGit(conf) {
+	if !CheckForGit(conf) {
 		log.Fatalln("[FATAL ERROR] 'git' executable not found, git is required to work properly - exiting.")
 	}
 
@@ -23,6 +23,10 @@ func main() {
 
 	if conf.DebugMode {
 		DebugLog(conf, "Debug mode enabled")
+	}
+
+	if !CheckIfGitRepo(conf) {
+		log.Fatalln("[FATAL ERROR] not a git repository - exiting.")
 	}
 
 	if devMode {
