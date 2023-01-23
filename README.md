@@ -2,6 +2,12 @@
 
 Backup your repository at configured intervals
 
+
+
+https://user-images.githubusercontent.com/47723417/213989957-510e79f1-ee54-4272-8ffa-7b773c92d37a.mp4
+
+
+
 ## Why use xgs
 
 - highly configurable
