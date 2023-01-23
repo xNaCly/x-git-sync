@@ -45,12 +45,15 @@ func gitAffectedFiles(conf Config) []string {
 		}
 		res = append(res, strings.TrimSpace(file[1:])+" ("+change+")")
 	}
-	DebugLog(conf, fmt.Sprintf("parsed '%d' changed files...", len(res)))
+	var c rune
+	if len(res) > 1 {
+		c = 's'
+	}
+	DebugLog(conf, fmt.Sprintf("parsed '%d' changed file%c...", len(res), c))
 	return res
 }
 
 func GitPull(conf Config) {
-	DebugLog(conf, "pulling changes from remote...")
 	_, err := runCmd([]string{"git", "pull"})
 	if err != nil {
 		log.Println("[WARNING] pulling changes from remote failed: ", err)
@@ -89,14 +92,13 @@ func GitPush(conf Config) {
 		log.Println("[WARNING] push to remote failed: ", err)
 		return
 	}
-	log.Println("[INFO][PUSH]: pushed commits to remote...")
+	log.Println("pushed commits to remote...")
 }
 
 // makes a commit
 func GitCommit(conf Config) {
-	DebugLog(conf, "making commit...")
 	commitContent := generateCommitContent(conf)
-	log.Println("[INFO][COMMIT]:", strconv.Quote(strings.Join(commitContent, " ")))
+	log.Println("new commit:", strconv.Quote(strings.Join(commitContent, " ")))
 	_, err := runCmd(commitContent)
 	if err != nil {
 		log.Println("[WARNING] commiting failed: ", err)
@@ -122,6 +124,5 @@ func generateCommitContent(conf Config) []string {
 		commit = append(commit, strings.Split(conf.CommitCommand, " ")...)
 	}
 	commit = append(commit, commitContent)
-	DebugLog(conf, fmt.Sprintf("generated commit content. (%s)", strconv.Quote(strings.Join(commit, " "))))
 	return commit
 }

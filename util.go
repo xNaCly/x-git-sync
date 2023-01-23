@@ -84,7 +84,7 @@ func getConfig() Config {
 	confContent, err := os.ReadFile(confFile)
 	if err != nil {
 		log.Println("[WARNING] xgs config not found: ", err)
-		log.Println("[INFO] using fallback config...")
+		log.Println("using fallback config...")
 		return fallbackConf
 	}
 
@@ -93,7 +93,7 @@ func getConfig() Config {
 	err = json.Unmarshal(confContent, &resConfig)
 	if err != nil {
 		log.Println("[WARNING] couldn't parse config", err)
-		log.Println("[INF] using fallback config...")
+		log.Println("using fallback config...")
 		return fallbackConf
 	}
 	return resConfig

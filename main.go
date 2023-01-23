@@ -37,18 +37,19 @@ func main() {
 	}
 
 	if conf.PullOnStart {
+		log.Println("pulling changes from remote...")
 		GitPull(conf)
 	}
 
-	log.Println("[INFO] Watching for changes...")
-
+	log.Println("Watching for changes...")
 	for true {
 		if GitRepoHasChanges(conf) {
 			GitAdd(conf)
 			GitCommit(conf)
 			GitPush(conf)
+			log.Printf("All done, waiting for %d seconds before checking for changes again...", conf.BackupInterval)
 		} else {
-			log.Println("[INFO] No changes to commit, waiting for next iteration...")
+			log.Println("No changes to commit, waiting for next iteration...")
 		}
 		time.Sleep(time.Duration(conf.BackupInterval) * time.Second)
 	}
