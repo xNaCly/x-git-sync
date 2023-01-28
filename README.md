@@ -86,11 +86,8 @@ Prerequisites:
 
 If xgs can't find its config file (`xgs.json`) it will fallback to its default config:
 
-```json
+```jsonc
 {
-  // will be inserted into the %title% placeholder in the commit_format string
-  "commit_title": "backup",
-
   // specifies the date format which the date will be formatted as
   //
   //  - 2006 for the year, 06 would only be the last two integer
@@ -106,9 +103,8 @@ If xgs can't find its config file (`xgs.json`) it will fallback to its default c
   "commit_date": "2006-01-02 15:04:05",
 
   // specifies the format of the commit, currently supports:
-  // - commit_title: %title%
   // - commit_date: %date%
-  "commit_format": "%title% %date%",
+  "commit_format": "backup: %date%",
 
   // List filenames affected by the commit in the commit body
   // together with the type of change which happend to the file:
