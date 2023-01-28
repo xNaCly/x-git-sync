@@ -115,8 +115,8 @@ func GitCommit(conf Config) {
 // - the affected files if AddAffectedFiles is true
 func generateCommitContent(conf Config) []string {
 	DebugLog(conf, "generating commit content...")
-	commitTime := time.Now().Format(conf.CommitTitleDateFormat)
-	commitContent := conf.AutoCommitPrefix + commitTime
+	commitTime := time.Now().Format(conf.CommitDate)
+	commitContent := strings.ReplaceAll(conf.CommitFormat, "%date%", commitTime)
 	commit := make([]string, 0)
 	if conf.AddAffectedFiles {
 		affectedFiles := gitAffectedFiles(conf)
