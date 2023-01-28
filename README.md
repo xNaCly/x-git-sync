@@ -2,14 +2,7 @@
 
 Backup your repository at configured intervals
 
-
-
-
 https://user-images.githubusercontent.com/47723417/213995030-a72ab64f-3e64-403e-bda7-57279b37780d.mp4
-
-
-
-
 
 ## Why use xgs
 
@@ -95,9 +88,6 @@ If xgs can't find its config file (`xgs.json`) it will fallback to its default c
 
 ```jsonc
 {
-  // will be inserted before the local date string in the commit title
-  "auto_commit_prefix": "backup: ",
-
   // specifies the date format which the date will be formatted as
   //
   //  - 2006 for the year, 06 would only be the last two integer
@@ -110,7 +100,11 @@ If xgs can't find its config file (`xgs.json`) it will fallback to its default c
   // time formatting in go is weird, see docs:
   //
   // https://www.digitalocean.com/community/tutorials/how-to-use-dates-and-times-in-go
-  "commit_title_date_format": "2006-01-02 15:04:05",
+  "commit_date": "2006-01-02 15:04:05",
+
+  // specifies the format of the commit, currently supports:
+  // - commit_date: %date%
+  "commit_format": "backup: %date%",
 
   // List filenames affected by the commit in the commit body
   // together with the type of change which happend to the file:

@@ -32,7 +32,7 @@ func main() {
 	if devMode {
 		conf.DebugMode = true
 		DebugLog(conf, "Dev mode enabled, automatically enabled debug mode, adding, committing and pushing will be disabled.")
-		generateCommitContent(conf)
+		log.Println(generateCommitContent(conf))
 		os.Exit(0)
 	}
 

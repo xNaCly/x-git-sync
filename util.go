@@ -10,12 +10,10 @@ import (
 )
 
 type Config struct {
-	// will be inserted before the local date string in the commit title, default: "backup: "
-	AutoCommitPrefix string `json:"auto_commit_prefix"`
-
-	// TODO: implement
-	//
-	// CommitTitle string `json:"custom_commit_title"`
+	// specifies the format of the commit message, default: "backup: %date%"
+	// currently supportes:
+	// - %date%: the date of the commit, formatted as specified in Commit_date
+	CommitFormat string `json:"commit_format"`
 
 	// specifies the date format which the date will be formatted as, default: "2006-01-02 15:04:05"
 	//
@@ -29,7 +27,7 @@ type Config struct {
 	// time formatting in go is weird, see docs:
 	//
 	// https://www.digitalocean.com/community/tutorials/how-to-use-dates-and-times-in-go
-	CommitTitleDateFormat string `json:"commit_title_date_format"`
+	CommitDate string `json:"commit_date"`
 
 	// List filenames affected by the commit in the commit body, default: true
 	AddAffectedFiles bool `json:"add_affected_files"`
@@ -54,28 +52,16 @@ type Config struct {
 // - On Plan 9, it returns $home/lib
 //
 // config file location depends on os.UserConfigDir()
-//
-// if config is not found the fallback config is:
-//
-//		Config{
-//	     AutoCommitPrefix:      "backup: ",
-//	     BackupInterval:        300,
-//	     CommitCommand:         "git commit -m",
-//	     AddAffectedFiles:      true,
-//	     CommitTitleDateFormat: "2006-01-02 15:04:05",
-//			DebugMode:             false,
-//			PullOnStart:           true,
-//		}
 func getConfig() Config {
 	// all occuring errors are logged, but not treated like panics, due to the fact that a fallback config is provided
 	fallbackConf := Config{
-		AutoCommitPrefix:      "backup: ",
-		BackupInterval:        300,
-		CommitCommand:         "git commit -m",
-		AddAffectedFiles:      true,
-		CommitTitleDateFormat: "2006-01-02 15:04:05",
-		DebugMode:             false,
-		PullOnStart:           true,
+		CommitFormat:     "backup: %date%",
+		BackupInterval:   300,
+		CommitCommand:    "git commit -m",
+		AddAffectedFiles: true,
+		CommitDate:       "2006-01-02 15:04:05",
+		DebugMode:        false,
+		PullOnStart:      true,
 	}
 
 	confDir, _ := os.UserConfigDir()
